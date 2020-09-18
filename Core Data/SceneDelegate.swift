@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  Core Data
+//  Cars_test_task
 //
 //  Created by Air on 9/17/20.
 //  Copyright © 2020 Anton Serdyuk. All rights reserved.

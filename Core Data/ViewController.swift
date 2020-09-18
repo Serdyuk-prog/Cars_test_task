@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Core Data
+//  Cars_test_task
 //
 //  Created by Air on 9/17/20.
 //  Copyright © 2020 Anton Serdyuk. All rights reserved.
@@ -49,50 +49,45 @@ class ViewController: UIViewController, UITableViewDelegate {
         }
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//      super.viewWillAppear(animated)
-//
-//      //1
-//      guard let appDelegate =
-//        UIApplication.shared.delegate as? AppDelegate else {
-//          return
-//      }
-//
-//      let managedContext =
-//        appDelegate.persistentContainer.viewContext
-//
-//      //2
-//      let fetchRequest =
-//        NSFetchRequest<NSManagedObject>(entityName: "Person")
-//
-//      //3
-//      do {
-//        people = try managedContext.fetch(fetchRequest)
-//      } catch let error as NSError {
-//        print("Could not fetch. \(error), \(error.userInfo)")
-//      }
-//    }
-    
+
     // Implementing the addItem IBAction
     
-    
     @IBAction func addItem(_ sender: Any) {
-         // Create alert
+        
+        // Create alert
         let alert = UIAlertController(title: "New Car", message: "Add a new car",
                                       preferredStyle: .alert)
+        // Add TextFields in alert
         alert.addTextField()
+        alert.addTextField()
+        alert.addTextField()
+        alert.addTextField()
+        
+        // Set hints and input types
+        alert.textFields![0].placeholder = "Manufacturer"
+        alert.textFields![1].placeholder = "Model"
+        alert.textFields![2].placeholder = "Body type"
+        alert.textFields![3].placeholder = "Production year"
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { action in
             
-            // Get the text field
-            let textfield = alert.textFields![0]
             
             // Crate a item oject
             let newItem = Car(context: self.context)
-            newItem.model = textfield.text
-            newItem.body_type = "default_body_type"
-            newItem.manufacturer = "default_manufacturer"
-            newItem.year_of_ssue = 0
+            
+            // Set properties
+            newItem.manufacturer = alert.textFields?[0].text ?? ""
+            newItem.model = alert.textFields?[1].text ?? ""
+            newItem.body_type = alert.textFields?[2].text ?? ""
+            
+            // Checking int value
+            let year = alert.textFields?[3].text ?? ""
+            var number = Int(year)
+            if number == nil{
+                number = 0
+            }
+            newItem.production_year = Int16(number!)
+            
             
             // Save the data
             do{
@@ -107,16 +102,9 @@ class ViewController: UIViewController, UITableViewDelegate {
             
                     
                 
-        //            guard let textField = alert.textFields?.first,
-        //                let itemToSave = textField.text else {
-        //                    return
-        //            }
-        //
-        //            //self.save(item: itemToSave)
-        //            self.tableView.reloadData()
-                }
-        let cancelAction = UIAlertAction(title: "Cancel",
-                                              style: .cancel)
+       
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
              
              
                alert.addAction(saveAction)
@@ -124,41 +112,6 @@ class ViewController: UIViewController, UITableViewDelegate {
              
                present(alert, animated: true)
     }
-    
-    
-//    func save(name: String) {
-//
-//      guard let appDelegate =
-//        UIApplication.shared.delegate as? AppDelegate else {
-//        return
-//      }
-//
-//      // 1
-//      let managedContext =
-//        appDelegate.persistentContainer.viewContext
-//
-//      // 2
-//      let entity =
-//        NSEntityDescription.entity(forEntityName: "Person",
-//                                   in: managedContext)!
-//
-//      let person = NSManagedObject(entity: entity,
-//                                   insertInto: managedContext)
-//
-//      // 3
-//      person.setValue(name, forKeyPath: "name")
-//
-//      // 4
-//      do {
-//        try managedContext.save()
-//        people.append(person)
-//      } catch let error as NSError {
-//        print("Could not save. \(error), \(error.userInfo)")
-//      }
-//    }
-    
-    
-
 }
 
 // MARK: - UITableViewDataSource
@@ -173,12 +126,12 @@ extension ViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
     
-        //Get item from the array and set the label
+        // Get item from the array and set the label
         let item = self.items![indexPath.row]
-    
-        cell.textLabel?.text = item.model
-   // cell.textLabel?.text =
-     // person.value(forKeyPath: "name") as? String
+        
+        // Put data in cell
+        cell.textLabel?.text = item.manufacturer! + " " + item.model! + " " + item.body_type! + " " + String(item.production_year)
+        
         return cell
     }
     
@@ -189,19 +142,34 @@ extension ViewController: UITableViewDataSource {
         
         // Create alert
         let alert = UIAlertController(title: "Edit Car", message: "Edit model", preferredStyle: .alert)
+        
         alert.addTextField()
+        alert.addTextField()
+        alert.addTextField()
+        alert.addTextField()
+
         
-        let textfield = alert.textFields![0]
-        textfield.text = item.model
+        alert.textFields![0].text = item.manufacturer
+        alert.textFields![1].text = item.model
+        alert.textFields![2].text = item.body_type
+        alert.textFields![3].text = String(item.production_year)
         
-        // Configurate buttan handler
+        // Configurate button handler
         let saveButton = UIAlertAction(title: "Save", style: .default) { (action) in
             
-            // Get the textfield for the alert
-            let textfield = alert.textFields![0]
             
             // Edit property of item object
-            item.model = textfield.text
+            item.manufacturer = alert.textFields?[0].text ?? ""
+            item.model = alert.textFields?[1].text ?? ""
+            item.body_type = alert.textFields?[2].text ?? ""
+            
+            // Checking int value
+            let year = alert.textFields?[3].text ?? ""
+            var number = Int(year)
+            if number == nil{
+                number = 0
+            }
+            item.production_year = Int16(number!)
             
             // Save the data
             do{

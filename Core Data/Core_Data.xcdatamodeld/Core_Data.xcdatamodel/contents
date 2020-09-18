@@ -4,7 +4,7 @@
         <attribute name="body_type" optional="YES" attributeType="String"/>
         <attribute name="manufacturer" optional="YES" attributeType="String"/>
         <attribute name="model" optional="YES" attributeType="String"/>
-        <attribute name="year_of_ssue" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="production_year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="Car" positionX="-54" positionY="-9" width="128" height="103"/>
